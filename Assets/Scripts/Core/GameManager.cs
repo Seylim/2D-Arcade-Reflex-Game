@@ -10,9 +10,14 @@ public class GameManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; }
 
+    private void OnEnable()
+    {
+        GameEvents.OnTargetHit += HandleTargetHit;
+    }
+
     void Start()
     {
-        
+        StartGame();
     }
 
     private void StartGame()
@@ -48,5 +53,10 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         GameEvents.OnScoreChanged?.Invoke(score);
+    }
+
+    private void HandleTargetHit(int scoreValue)
+    {
+        AddScore(scoreValue);
     }
 }

@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField]
+    private int scoreValue = 10;
+    private void OnMouseDown()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameEvents.OnTargetHit?.Invoke(scoreValue);
+        Destroy(gameObject);
     }
 }
