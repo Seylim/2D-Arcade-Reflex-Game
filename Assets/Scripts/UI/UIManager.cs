@@ -12,12 +12,14 @@ public class UIManager : MonoBehaviour
     {
         GameEvents.OnScoreChanged += UpdateScore;
         GameEvents.OnGameOver += ShowGameOver;
+        GameEvents.OnGameRestarted += HideGameOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnScoreChanged -= UpdateScore;
         GameEvents.OnGameOver -= ShowGameOver;
+        GameEvents.OnGameRestarted -= HideGameOver;
     }
 
     private void UpdateScore(int newScore)
@@ -28,5 +30,15 @@ public class UIManager : MonoBehaviour
     private void ShowGameOver()
     {
         gameOverPanel.SetActive(true);
+    }
+
+    private void HideGameOver()
+    {
+        gameOverPanel.SetActive(false);
+    }
+
+    public void OnRestartButtonClicked()
+    {
+        GameEvents.OnGameRestarted?.Invoke();
     }
 }

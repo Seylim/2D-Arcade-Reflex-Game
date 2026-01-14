@@ -13,11 +13,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnTargetHit += HandleTargetHit;
+        GameEvents.OnGameRestarted += RestartGame;
     }
 
     private void OnDisable()
     {
         GameEvents.OnTargetHit -= HandleTargetHit;
+        GameEvents.OnGameRestarted -= RestartGame;
     }
 
     private void Start()
@@ -66,5 +68,15 @@ public class GameManager : MonoBehaviour
             return;
 
         AddScore(scoreValue);
+    }
+
+    private void RestartGame()
+    {
+        score = 0;
+        remainingTime = gameConfig.gameDuration;
+        CurrentState = GameState.Playing;
+
+        GameEvents.OnGameStarted?.Invoke();
+        GameEvents.OnScoreChanged?.Invoke(score);
     }
 }
