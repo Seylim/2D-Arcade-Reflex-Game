@@ -15,7 +15,12 @@ public class GameManager : MonoBehaviour
         GameEvents.OnTargetHit += HandleTargetHit;
     }
 
-    void Start()
+    private void OnDisable()
+    {
+        GameEvents.OnTargetHit -= HandleTargetHit;
+    }
+
+    private void Start()
     {
         StartGame();
     }
@@ -30,14 +35,14 @@ public class GameManager : MonoBehaviour
         GameEvents.OnScoreChanged?.Invoke(score);
     }
 
-    void Update()
+    private void Update()
     {
         if (CurrentState != GameState.Playing)
             return;
 
         remainingTime -= Time.deltaTime;
 
-        if (remainingTime <= 0)
+        if (remainingTime <= 0f)
         {
             EndGame();
         }
@@ -57,6 +62,9 @@ public class GameManager : MonoBehaviour
 
     private void HandleTargetHit(int scoreValue)
     {
+        if (CurrentState != GameState.Playing)
+            return;
+
         AddScore(scoreValue);
     }
 }
