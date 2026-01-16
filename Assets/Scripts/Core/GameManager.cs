@@ -14,12 +14,14 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.OnTargetHit += HandleTargetHit;
         GameEvents.OnGameRestarted += RestartGame;
+        GameEvents.OnTargetMissed += MissedTarget;
     }
 
     private void OnDisable()
     {
         GameEvents.OnTargetHit -= HandleTargetHit;
         GameEvents.OnGameRestarted -= RestartGame;
+        GameEvents.OnTargetMissed -= MissedTarget;
     }
 
     private void Start()
@@ -68,6 +70,20 @@ public class GameManager : MonoBehaviour
             return;
 
         AddScore(scoreValue);
+    }
+
+    public void SubtractScore(int amount)
+    {
+        score -= amount;
+        GameEvents.OnScoreChanged?.Invoke(score);
+    }
+
+    private void MissedTarget(int scoreValue)
+    {
+        if (CurrentState != GameState.Playing)
+            return;
+
+        SubtractScore(scoreValue);
     }
 
     private void RestartGame()
